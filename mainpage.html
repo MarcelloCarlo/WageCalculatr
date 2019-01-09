@@ -94,6 +94,7 @@
                                 </div>
                                 <form action="" method="get">
                                 <div class="row">
+
                                     <!--Daily Rate-->
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="form-group">
@@ -117,6 +118,7 @@
                                             Start Time
                                                 <div class="bootstrap-select fm-cmp-mg">
                                                     <select class="selectpicker" id="start_time" required="">
+                                                        <option value="">Start Time</option>
                                                         <option value="1">1:00 am</option>
                                                         <option value="2">2:00 am</option>
                                                         <option value="3">3:00 am</option>
@@ -128,7 +130,7 @@
                                                         <option value="9">9:00 am</option>
                                                         <option value="10">10:00 am</option>
                                                         <option value="11">11:00 am</option>
-                                                        <option value="12">12:00 am</option>
+                                                        <option value="12">12:00 nn</option>
                                                         <option value="13">1:00 pm</option>
                                                         <option value="14">2:00 pm</option>
                                                         <option value="15">3:00 pm</option>
@@ -140,7 +142,7 @@
                                                         <option value="21">9:00 pm</option>
                                                         <option value="22">10:00 pm</option>
                                                         <option value="23">11:00 pm</option>
-                                                        <option value="24">12:00 pm</option>
+                                                        <option value="24">12:00 am</option>
                                                     </select>
                                                 </div>
                                         </div>
@@ -151,6 +153,7 @@
                                             End Time
                                                 <div class="bootstrap-select fm-cmp-mg">
                                                     <select class="selectpicker" id="end_time" required>
+                                                        <option value="">Start Time</option>
                                                         <option value="1">1:00 am</option>
                                                         <option value="2">2:00 am</option>
                                                         <option value="3">3:00 am</option>
@@ -162,7 +165,7 @@
                                                         <option value="9">9:00 am</option>
                                                         <option value="10">10:00 am</option>
                                                         <option value="11">11:00 am</option>
-                                                        <option value="12">12:00 am</option>
+                                                        <option value="12">12:00 nn</option>
                                                         <option value="13">1:00 pm</option>
                                                         <option value="14">2:00 pm</option>
                                                         <option value="15">3:00 pm</option>
@@ -174,13 +177,29 @@
                                                         <option value="21">9:00 pm</option>
                                                         <option value="22">10:00 pm</option>
                                                         <option value="23">11:00 pm</option>
-                                                        <option value="24">12:00 pm</option>
+                                                        <option value="24">12:00 am</option>
                                                     </select>
                                                 </div>
                                         </div>
                                     <!--Time-->
 
-                                    <div class="material-design-btn" style="margin-left: 77%; margin-top: 25%">
+                                    <p class="col-lg-12">
+
+                                    <!--Type-->    
+                                        <div class="col-lg-12 col-md-3 col-sm-3 col-xs-12">
+                                            Type of Overtime
+                                                <div class="bootstrap-select fm-cmp-mg">
+                                                    <select class="selectpicker" id="end_time" required>
+                                                        <option value="">Type of Overtime</option>
+                                                        <option value="1">Regular Overtime</option>
+                                                        <option value="2">Rest Overtime</option>
+                                                        <option value="3">Legal Holiday Overtime</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+                                    <!--Type-->
+
+                                    <div class="material-design-btn" style="margin-left: 75%">
                                         <button class="btn notika-btn-green btn-reco-mg btn-button-mg" type="submit">Calculate</button>
                                     </div>
                                 </div></form>
