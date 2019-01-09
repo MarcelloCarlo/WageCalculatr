@@ -283,9 +283,6 @@ $(document).ready(function() {
         numHourlyrate.toFixed(2) = numDailyrate / 8;
         //Getting absolute total work hours
         numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
-}
-}
-}
 
         //Check the total hours if there's an OT
         if (numTotalTime > 8) {
@@ -320,5 +317,3 @@ $(document).ready(function() {
     });
 
 })
-}
-});
