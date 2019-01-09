@@ -272,7 +272,7 @@ $(document).ready(function() {
         $('#ans_net').text(numNetPay);
     }
 
-    $("").on('click', function() {
+    $("#btn_submit").on('click', function() {
         //getting values from input
         numOTtype = $('#OT_type').val();
         numDailyrate.toFixed(2) = $('#dailyrate').val();
