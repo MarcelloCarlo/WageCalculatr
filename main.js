@@ -1,14 +1,26 @@
-$(document).ready(function () {
-    var numOTtype = 0;
-    var numDailyrate = 0, numHourlyrate = 0;
-    var numTimeInHrs = 0, numTimeOutHrs = 0, numTotalTime = 0;
-    var numRegHours = 0;
-    var numTotalOThrs = 0;
-    var numRegOThrs = 0;
-    var numNightDiffhrs = [23, 0, 1, 2, 3, 4, 5]
+$(document).ready(function() {
+    //Options
+    let numOTtype = 0;
+    //Rates
+    let numDailyrate = 0,
+        numHourlyrate = 0,
+        numRegHourRate = 0,
+        numOvertimeRate = 0,
+        numOTNDrate = 0;
+    //Hours
+    let numTimeInHrs = 0,
+        numTimeOutHrs = 0,
+        numTotalTime = 0;
+    let numRegHours = 0;
+    let numTotalOThrs = 0;
+    let numRegOThrs = 0;
+    let numOTNDhrs = 0;
+    let numNightDiffHrsSet = [23, 0, 1, 2, 3, 4, 5];
+    //Flags
+    var intIfNDFlag = 0,
+        intOTFlag = 0;
 
-    $("").on('click', function () {
-        //function calculate(numOTtype,numDailyrate,numTimeInHrs,numTimeOutHrs);
+    $("").on('click', function() {
         //getting value of Overtime type
         numOTtype = $('').val();
         //Dividing the daily rate by 8 hours
@@ -16,33 +28,30 @@ $(document).ready(function () {
         //Getting absolute total work hours
         numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
 
-        //check the time out if the value is a candidate for night diff
-        for (var i = 0, l = numNightDiffhrs.length; i < l; i++) {
-            // Check if we have nested arrays
-            if (this[i] instanceof Array && array[i] instanceof Array) {
-                // recurse into the nested arrays
-                if (!this[i].equals(array[i]))
-                    return false;
-            }
-            else if (this[i] != array[i]) {
-                // Warning - two different object instances will never be equal: {x:20} != {x:20}
-                return false;
-            }
-        }
+        //Check the total hours if there's an OT
+        if (numTotalTime > 8) {
+            //Overtime is ON
+            intOTFlag = 1;
+            //getting person hours (8)
+            numRegHours = 8;
+            //Retrieving total Overtime
+            numTotalOThrs = Math.abs(numTotalTime - 8);
+            getNightDiff();
+        } else
 
         //selecting calculation based from Overtime type
-        switch (numOTtype) {
+            switch (numOTtype) {
             case 0:
                 alert('Select Overtime Type');
                 break;
             case 1:
-                calcRegularOT(numTotalTime, numHourlyrate);
+                calcRegularOT();
                 break;
             case 2:
-                calcRestOT(numTotalTime, numHourlyrate);
+                calcRestOT();
                 break;
             case 3:
-                calcLegalHolOT(numTotalTime, numHourlyrate);
+                calcLegalHolOT();
                 break;
             default:
                 break;
@@ -50,18 +59,46 @@ $(document).ready(function () {
 
     });
 
-    function calcRegularOT(_numTotalTime, _numHourlyrate) {
+    //check the time out if the value is a candidate for night diff
+    function getNightDiff() {
+        for (var i = 0, l = numNightDiffHrsSet.length; i < l; i++) {
+            if (numTimeOutHrs == numNightDiffHrsSet[i]) {
+                //Enable Night Diff flag if it exists
+                intIfNDFlag = 1;
+                //Getting regular Overtime hours
+                numRegOThrs = numTotalOThrs - (i + 1);
+                //Getting Overtime Night Diff
+                numOTNDhrs = i + 1;
+                break;
+            }
+        }
+
+    }
+    // Regular overtime
+    function calcRegularOT() {
+        //get regular rate
+        numRegHourRate = numRegHours * numHourlyrate;
+        //if there's an Overtime
+        if (intOTFlag == 1) {
+            //Overtime rate
+            numOvertimeRate = numTotalOThrs * 1.25 * numHourlyrate;
+            //if there's an night diff
+            if (intIfNDFlag == 1) {
+                //night diff rate
+                numOTNDrate = numOTNDhrs * 0.1 * numHourlyrate * 1.25;
+            }
+        }
 
     }
 
-    function calcRestOT(_numTotalTime, _numHourlyrate) { }
+    function calcRestOT(_numTotalTime, _numHourlyrate) {}
 
-    function calcLegalHolOT(_numTotalTime, _numHourlyrate) { }
-
-
+    function calcLegalHolOT(_numTotalTime, _numHourlyrate) {}
 
 
-    $('button').on('click', function (e) {
+
+
+    $('button').on('click', function(e) {
         console.log('e', e.target.innerHTML);
     });
 });
