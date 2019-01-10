@@ -93,6 +93,12 @@
                                     <p>Just enter the information needed at the fields provided below and hit Calculate.
                                     </p>
                                 </div>
+
+                                <div class="basic-tb-hd">
+                                    <b>Important Reminders!</b>
+                                    <p>Click the Refresh button first before entering a new input.</p>
+                                </div>
+                                
                                 <form id="formCalc" name="formCalc">
                                     <div class="row">
 
@@ -101,7 +107,7 @@
                                             <div class="form-group">
                                                 <div class="nk-int-st">
                                                     Daily Rate
-                                                    <input type="Number" class="form-control" placeholder="0" id="dailyrate" required="">
+                                                    <input type="Number" class="form-control" placeholder="0" id="dailyrate" autocomplete="off" required="">
                                                 </div>
                                             </div>
                                         </div>
@@ -184,25 +190,36 @@
                                         </div>
                                         <!--Time-->
 
-                                        <p class="col-lg-12">
+                                        <p class="col-lg-12"></p>
 
-                                            <!--Type-->
-                                            <div class="col-lg-12 col-md-3 col-sm-3 col-xs-12">
-                                                Type of Overtime
-                                                <div class="bootstrap-select fm-cmp-mg">
-                                                    <select class="selectpicker" id="OT_type" required>
-                                                        <option value="">Type of Overtime</option>
-                                                        <option value="1">Regular Overtime</option>
-                                                        <option value="2">Rest Overtime</option>
-                                                        <option value="3">Legal Holiday Overtime</option>
-                                                    </select>
-                                                </div>
+                                        <!--Type-->
+                                        <div class="col-lg-12 col-md-3 col-sm-3 col-xs-12">
+                                            Type of Overtime
+                                            <div class="bootstrap-select fm-cmp-mg">
+                                                <select class="selectpicker" id="OT_type" required>
+                                                    <option value="">Type of Overtime</option>
+                                                    <option value="1">Regular Overtime</option>
+                                                    <option value="2">Rest Overtime</option>
+                                                    <option value="3">Legal Holiday Overtime</option>
+                                                </select>
                                             </div>
-                                            <!--Type-->
+                                        </div>
+                                        <!--Type-->
 
-                                            <div class="material-design-btn" style="margin-left: 75%">
+                                        <p class="col-lg-12"></p>
+                                        <p class="col-lg-12"></p>
+
+                                        <!--Buttons-->
+                                        <div class="col-lg-12 col-md-3 col-sm-3 col-xs-12" style="margin-left: 49%">
+                                            <div class="col-lg-3 material-design-btn">
                                                 <button id="btn_submit" class=" btn notika-btn-green btn-reco-mg btn-button-mg" type="button">Calculate</button>
                                             </div>
+
+                                            <div class="col-lg-3 material-design-btn">
+                                                <button id="btn_refresh" class="btn notika-btn-cyan" type="button">Refresh</button>
+                                            </div>
+                                        </div>
+                                        <!--Buttons-->
                                     </div>
                                 </form>
                             </div>
@@ -231,15 +248,20 @@
                         <p class="col-lg-6"></p>
                         <p class="col-lg-6"></p>
 
-                        <!--Night Difference-->
-                        <p class="col-lg-6">Night Difference</p>
-                        <p class="col-lg-6" id="ans_nightDiff">0.00</p>
-                        <!--Night Difference-->
+                        <!--Total Hours Worked-->
+                        <p class="col-lg-6">Total Hours Worked</p>
+                        <p class="col-lg-6" id="ans_hoursworked">0</p>
+                        <!--Total Hours Worked-->
 
                         <!--Hourly Rate-->
                         <p class="col-lg-6">Hourly Rate</p>
                         <p class="col-lg-6" id="ans_hourlyRate">0.00</p>
                         <!--Hourly Rate-->
+
+                        <!--Night Differential Pay-->
+                        <p class="col-lg-6">Night Differential Pay</p>
+                        <p class="col-lg-6" id="ans_nightDiff">0.00</p>
+                        <!--Night Differential Pay-->
 
                         <!--Regular Time-->
                         <p class="col-lg-6">Regular Time</p>

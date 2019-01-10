@@ -27,6 +27,8 @@ $(document).ready(function() {
     //Flags
     var intIfNDFlag = 0,
         intOTFlag = 0;
+    //Extra Variables
+        newNumTotalTime = 0;
 
     $("#btn_submit").on('click', function() {
         //getting values from input
@@ -41,6 +43,7 @@ $(document).ready(function() {
         //Getting absolute total work hours
         numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
         console.log("numTotalTime " + numTotalTime);
+
         //Check the total hours if there's an OT
         if (numTotalTime >= 8) {
             //Overtime is ON
@@ -50,16 +53,20 @@ $(document).ready(function() {
             //Retrieving total Overtime
             numTotalOThrs = Math.abs(numTotalTime - 9);
             console.log("numTotalOThrs " + numTotalOThrs);
-
-
-
+            newNumTotalTime = Math.abs(numTotalTime - 1);
+            //Print the total hours worked
+            $('#ans_hoursworked').text(newNumTotalTime);
             getNightDiff();
         } else if (numTotalTime < 8) {
             if (numTotalTime >= 4) {
                 numRegHours = numTotalTime;
                 numRegHours - 1;
+            //Print the total hours worked
+            $('#ans_hoursworked').text(newNumTotalTime);
             } else if (numTotalTime < 4) {
                 numRegHours = numTotalTime;
+                //Print the total hours worked
+                $('#ans_hoursworked').text(numTotalTime);
             }
         }
 

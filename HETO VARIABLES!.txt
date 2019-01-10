@@ -20,3 +20,8 @@ ans_philhealth
 ans_pagibig
 ans_totalded
 ans_nightDiff
+ans_hoursworked
+
+buttons:
+btn_refresh
+btn_submit
