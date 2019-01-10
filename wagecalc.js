@@ -14,7 +14,7 @@ $(document).ready(function() {
         numWitholdingRate = 0,
         numWitholdingPercentRate = 0;;
     numSSSAmt = 0,
-        numPagibigAmt = 100, numTotalTaxRate = 0, numTotalTaxDeduct = 0, numNetPay = 0;
+        numPagibigAmt = 100, numTotalTaxRate = 0, numTotalTaxDeduct = 0, numNetPay = 0, numTrioRate = 0, numTaxableIncome = 0;
     //Hours
     var numTimeInHrs = 0,
         numTimeOutHrs = 0,
@@ -143,7 +143,6 @@ $(document).ready(function() {
     function calcRestOT(_numTotalTime, _numHourlyrate) {
         //get regular numWitholdingPercentRate
         numRegHourRate = numRegHours * 1.3 * numHourlyrate;
-
         //Print the amount selected
         $('#ans_regtime').text(numRegHourRate.toFixed(2));
         //if there's an Overtime
@@ -285,43 +284,66 @@ $(document).ready(function() {
     }
 
     function calcTax() {
-        //Compute essentials
-        fnPagibig();
-        fnPhilHealth();
-        fnSSS();
-        //value matching
-        if (numGrossSalary > 685 && numGrossSalary < 1097) {
-            numCompensationLevel = 685;
-            numWitholdingRate = 0;
-            numWitholdingPercentRate = .20;
-        } else if (numGrossSalary > 1096 && numGrossSalary < 2192) {
-            numCompensationLevel = 1096;
-            numWitholdingRate = 82.19;
-            numWitholdingPercentRate = .25;
-        } else if (numGrossSalary > 2192 && numGrossSalary < 5479) {
-            numCompensationLevel = 2192;
-            numWitholdingRate = 1342.47;
-            numWitholdingPercentRate = .32;
-        } else if (numGrossSalary > 5479 && numGrossSalary < 21918) {
-            numCompensationLevel = 5479;
-            numWitholdingRate = 6602.74;
-            numWitholdingPercentRate = .35;
-        }
-        //compute the tax deduction
-        numTotalTaxDeduct = numSSSAmt + numPhilHealthAmt + numPagibigAmt;
-        //Print to label
-        $('#ans_totalded').text(numTotalTaxDeduct.toFixed(2));
 
-        // Get total tax rate
-        if (numWitholdingRate == 0) {
-            numTotalTaxRate = (numGrossSalary - numTotalTaxDeduct - numCompensationLevel) * numWitholdingPercentRate;
-        } else if (numWitholdingRate != 0) {
-            numTotalTaxRate = (numGrossSalary - numTotalTaxDeduct - numCompensationLevel) * numWitholdingPercentRate + numWitholdingRate;
+        if (numGrossSalary >= 500) {
+            //Compute essentials
+            fnPagibig();
+            fnPhilHealth();
+            fnSSS();
+            //compute the three taxes
+            numTrioRate = numSSSAmt + numPhilHealthAmt + numPagibigAmt;
+            //Compute taxable income
+            numTaxableIncome = numGrossSalary - numTrioRate;
+            //value matching
+            if (numTaxableIncome >= 685 && numTaxableIncome < 1097) {
+                numCompensationLevel = 685;
+                numWitholdingRate = 0;
+                numWitholdingPercentRate = .2;
+            } else if (numTaxableIncome >= 1096 && numTaxableIncome < 2192) {
+                numCompensationLevel = 1096;
+                numWitholdingRate = 82.19;
+                numWitholdingPercentRate = .25;
+            } else if (numTaxableIncome >= 2192 && numTaxableIncome < 5479) {
+                numCompensationLevel = 2192;
+                numWitholdingRate = 1342.47;
+                numWitholdingPercentRate = .32;
+            } else if (numTaxableIncome >= 5479 && numTaxableIncome < 21918) {
+                numCompensationLevel = 5479;
+                numWitholdingRate = 6602.74;
+                numWitholdingPercentRate = .35;
+            }
+
+            if (numTaxableIncome < 685) {
+                numTotalTaxRate = 0;
+                $('#ans_tax').text(numTotalTaxRate.toFixed(2));
+            } else if (numTaxableIncome >= 685) {
+
+                // Get total tax rate
+                if (numWitholdingRate == 0) {
+                    numTotalTaxRate = (numGrossSalary - numTrioRate - numCompensationLevel) * numWitholdingPercentRate;
+                    console.log("numGrossSalary " + numGrossSalary + " numTotalTaxDeduct " + numTotalTaxDeduct + " numCompensationLevel " + numCompensationLevel + " numWitholdingPercentRate " + numWitholdingPercentRate);
+                    //Print to label
+                    $('#ans_tax').text(Number(Math.round(numTotalTaxRate + 'e2') + 'e-2'));
+                } else if (numWitholdingRate != 0) {
+                    numTotalTaxRate = (numGrossSalary - numTrioRate - numCompensationLevel) * numWitholdingPercentRate + numWitholdingRate;
+
+                    console.log("numGrossSalary " + numGrossSalary + " numTrioRate " + numTrioRate + " numCompensationLevel " + numCompensationLevel + " numWitholdingPercentRate " + numWitholdingPercentRate + " numWitholdingRate " + numWitholdingRate);
+                    //Print to label
+                    $('#ans_tax').text(Number(Math.round(numTotalTaxRate + 'e2') + 'e-2'));
+                }
+            }
+
+
+            numTotalTaxDeduct = numTrioRate + numTotalTaxRate;
+            //Print to label
+            $('#ans_totalded').text(Number(Math.round(numTotalTaxDeduct + 'e2') + 'e-2'));
+
+            //get net pay
+            numNetPay = numGrossSalary - numTotalTaxDeduct;
+            //Print to label
+            $('#ans_net').text(Number(Math.round(numNetPay + 'e2') + 'e-2'));
         }
-        //get net pay
-        numNetPay = numGrossSalary - numTotalTaxDeduct;
-        //Print to label
-        $('#ans_net').text(numNetPay.toFixed(2));
+
     }
 
 })
