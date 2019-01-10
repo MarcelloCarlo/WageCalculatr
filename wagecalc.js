@@ -50,6 +50,9 @@ $(document).ready(function() {
             //Retrieving total Overtime
             numTotalOThrs = Math.abs(numTotalTime - 9);
             console.log("numTotalOThrs " + numTotalOThrs);
+
+
+
             getNightDiff();
         } else if (numTotalTime < 8) {
             if (numTotalTime >= 4) {
