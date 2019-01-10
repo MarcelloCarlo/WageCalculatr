@@ -7,6 +7,7 @@ start_time
 end_time
 
 answer:
+ans_hourlyRate
 ans_regtime
 ans_overtime
 ans_regOT

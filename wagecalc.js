@@ -23,7 +23,7 @@ $(document).ready(function() {
     var numTotalOThrs = 0;
     var numRegOThrs = 0;
     var numOTNDhrs = 0;
-    var numNightDiffHrsSet = [23, 24, 1, 2, 3, 4, 5];
+    var numNightDiffHrsSet = [22, 23, 24, 1, 2, 3, 4, 5, 6];
     //Flags
     var intIfNDFlag = 0,
         intOTFlag = 0;
@@ -37,24 +37,29 @@ $(document).ready(function() {
 
         //Dividing the daily numWitholdingPercentRate by 8 hours
         numHourlyrate = numDailyrate / 8;
+        $('#ans_hourlyRate').text(numHourlyrate.toFixed(2));
         //Getting absolute total work hours
         numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
-        console.log(numOTtype);
-        console.log(numHourlyrate);
-        console.log(numTotalTime);
+        console.log("numTotalTime " + numTotalTime);
         //Check the total hours if there's an OT
         if (numTotalTime >= 8) {
             //Overtime is ON
             intOTFlag = 1;
-            //getting person hours (8)
+            //getting person hours (7)
             numRegHours = 8;
             //Retrieving total Overtime
-            numTotalOThrs = Math.abs(numTotalTime - 8);
-
+            numTotalOThrs = Math.abs(numTotalTime - 9);
+            console.log("numTotalOThrs " + numTotalOThrs);
+            getNightDiff();
         } else if (numTotalTime < 8) {
-
+            if (numTotalTime >= 4) {
+                numRegHours = numTotalTime;
+                numRegHours - 1;
+            } else if (numTotalTime < 4) {
+                numRegHours = numTotalTime;
+            }
         }
-        getNightDiff();
+
         //selecting calculation based from Overtime type
         switch (parseInt(numOTtype.trim())) {
             case 0:
@@ -82,10 +87,11 @@ $(document).ready(function() {
             if (numTimeOutHrs == numNightDiffHrsSet[i]) {
                 //Enable Night Diff flag if it exists
                 intIfNDFlag = 1;
-                //Getting regular Overtime hours
-                numRegOThrs = numTotalOThrs - (i + 1);
+
                 //Getting Overtime Night Diff
-                numOTNDhrs = i + 1;
+                numOTNDhrs = i;
+                console.log("OTNDHRS " +
+                    numOTNDhrs);
                 break;
             }
         }
@@ -98,14 +104,12 @@ $(document).ready(function() {
         numRegHourRate = numRegHours * numHourlyrate;
         //Print the amount selected
         $('#ans_regtime').text(numRegHourRate.toFixed(2));
-        console.log(numRegHourRate.toFixed(2));
         //if there's an Overtime
         if (intOTFlag == 1) {
             //Overtime numWitholdingPercentRate
             numOvertimeRate = numTotalOThrs * 1.25 * numHourlyrate;
             //Print the amount selected
             $('#ans_overtime').text(numOvertimeRate.toFixed(2));
-            console.log(numOvertimeRate.toFixed(2));
             //if there's an night diff
             if (intIfNDFlag == 1) {
                 //night diff numWitholdingPercentRate
@@ -138,39 +142,40 @@ $(document).ready(function() {
     //rest overtime
     function calcRestOT(_numTotalTime, _numHourlyrate) {
         //get regular numWitholdingPercentRate
-        numRegHourRate.toFixed(2) = numRegHours * 1.3 * numHourlyrate;
+        numRegHourRate = numRegHours * 1.3 * numHourlyrate;
+
         //Print the amount selected
-        $('#ans_regtime').text(numRegHourRate);
+        $('#ans_regtime').text(numRegHourRate.toFixed(2));
         //if there's an Overtime
         if (intOTFlag == 1) {
             //Overtime numWitholdingPercentRate
-            numOvertimeRate.toFixed(2) = numTotalOThrs * 1.3 * numHourlyrate;
+            numOvertimeRate = numTotalOThrs * 1.3 * numHourlyrate;
             //Print the amount selected
-            $('#ans_overtime').text(numOvertimeRate);
+            $('#ans_overtime').text(numOvertimeRate.toFixed(2));
             //if there's an night diff
             if (intIfNDFlag == 1) {
                 //night diff numWitholdingPercentRate
-                numOTNDrate.toFixed(2) = numOTNDhrs * 0.1 * numHourlyrate * 1.3;
+                numOTNDrate = numOTNDhrs * 0.1 * numHourlyrate * 1.3;
                 //Print the amount selected
-                $('#ans_otND').text(numOTNDrate);
+                $('#ans_otND').text(numOTNDrate.toFixed(2));
             }
             //if there's no Night Diff
             else {
-                numOTNDrate.toFixed(2) = 0.00;
+                numOTNDrate = 0.00;
             }
 
             //get total Overtime numWitholdingPercentRate
-            numTotalOTRate.toFixed(2) = numOTNDrate + numOvertimeRate;
+            numTotalOTRate = numOTNDrate + numOvertimeRate;
             //Print the amount selected
-            $('#ans_totalOT').text(numTotalOTRate);
+            $('#ans_totalOT').text(numTotalOTRate.toFixed(2));
         }
         //if there's no overtime
         else {
             //get total Overtime numWitholdingPercentRate
-            numTotalOTRate.toFixed(2) = 0.00;
+            numTotalOTRate = 0.00;
         }
         //gross salary
-        numGrossSalary.toFixed(2) = numRegHourRate + numTotalOTRate;
+        numGrossSalary = numRegHourRate + numTotalOTRate;
         //Print the amount selected
         $('#ans_gross').text(numGrossSalary.toFixed(2));
         calcTax();
@@ -179,40 +184,40 @@ $(document).ready(function() {
     //Legal holiday
     function calcLegalHolOT() {
         //get regular numWitholdingPercentRate
-        numRegHourRate.toFixed(2) = numRegHours * 2 * numHourlyrate;
+        numRegHourRate = numRegHours * 2 * numHourlyrate;
         //Print the amount selected
-        $('#ans_regtime').text(numRegHourRate);
+        $('#ans_regtime').text(numRegHourRate.toFixed(2));
         //if there's an Overtime
         if (intOTFlag == 1) {
             //Overtime numWitholdingPercentRate
-            numOvertimeRate.toFixed(2) = numTotalOThrs * 2 * numHourlyrate;
+            numOvertimeRate = numTotalOThrs * 2 * numHourlyrate;
             //Print the amount selected
-            $('#ans_overtime').text(numOvertimeRate);
+            $('#ans_overtime').text(numOvertimeRate.toFixed(2));
             //if there's an night diff
             if (intIfNDFlag == 1) {
                 //night diff numWitholdingPercentRate
-                numOTNDrate.toFixed(2) = numOTNDhrs * 0.1 * numHourlyrate * 2;
+                numOTNDrate = numOTNDhrs * 0.1 * numHourlyrate * 2;
                 //Print the amount selected
-                $('#ans_otND').text(numOTNDrate);
+                $('#ans_otND').text(numOTNDrate.toFixed(2));
 
             }
             //if there's no Night Diff
             else {
-                numOTNDrate.toFixed(2) = 0.00;
+                numOTNDrate = 0.00;
             }
 
             //get total Overtime numWitholdingPercentRate
-            numTotalOTRate.toFixed(2) = numOTNDrate + numOvertimeRate;
+            numTotalOTRate = numOTNDrate + numOvertimeRate;
             //Print the amount selected
-            $('#ans_totalOT').text(numTotalOTRate);
+            $('#ans_totalOT').text(numTotalOTRate.toFixed(2));
         }
         //if there's no overtime
         else {
             //get total Overtime numWitholdingPercentRate
-            numTotalOTRate.toFixed(2) = 0.00;
+            numTotalOTRate = 0.00;
         }
         //gross salary
-        numGrossSalary.toFixed(2) = numRegHourRate + numTotalOTRate;
+        numGrossSalary = numRegHourRate + numTotalOTRate;
         //Print the amount selected
         $('#ans_gross').text(numGrossSalary.toFixed(2));
         calcTax();
