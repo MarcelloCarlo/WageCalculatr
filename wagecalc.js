@@ -27,6 +27,55 @@ $(document).ready(function() {
     //Flags
     var intIfNDFlag = 0,
         intOTFlag = 0;
+
+    $("#btn_submit").on('click', function() {
+        //getting values from input
+        numOTtype = $("#OT_type").val();
+        numDailyrate = $("#dailyrate").val();
+        numTimeInHrs = $("#start_time").val();
+        numTimeOutHrs = $("#end_time").val();
+
+        //Dividing the daily numWitholdingPercentRate by 8 hours
+        numHourlyrate = numDailyrate / 8;
+        //Getting absolute total work hours
+        numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
+        console.log(numOTtype);
+        console.log(numHourlyrate);
+        console.log(numTotalTime);
+        //Check the total hours if there's an OT
+        if (numTotalTime >= 8) {
+            //Overtime is ON
+            intOTFlag = 1;
+            //getting person hours (8)
+            numRegHours = 8;
+            //Retrieving total Overtime
+            numTotalOThrs = Math.abs(numTotalTime - 8);
+
+        } else if (numTotalTime < 8) {
+
+        }
+        getNightDiff();
+        //selecting calculation based from Overtime type
+        switch (parseInt(numOTtype.trim())) {
+            case 0:
+                alert('Select Overtime Type 1');
+                break;
+            case 1:
+                calcRegularOT();
+                break;
+            case 2:
+                calcRestOT();
+                break;
+            case 3:
+                calcLegalHolOT();
+                break;
+            default:
+                alert('Select Overtime Type 2');
+                break;
+        }
+
+    });
+
     //check the time out if the value is a candidate for night diff
     function getNightDiff() {
         for (var i = 0, l = numNightDiffHrsSet.length; i < l; i++) {
@@ -256,7 +305,7 @@ $(document).ready(function() {
         //compute the tax deduction
         numTotalTaxDeduct = numSSSAmt + numPhilHealthAmt + numPagibigAmt;
         //Print to label
-        $('#ans_totalded').text(numTotalTaxDeduct);
+        $('#ans_totalded').text(numTotalTaxDeduct.toFixed(2));
 
         // Get total tax rate
         if (numWitholdingRate == 0) {
@@ -265,53 +314,9 @@ $(document).ready(function() {
             numTotalTaxRate = (numGrossSalary - numTotalTaxDeduct - numCompensationLevel) * numWitholdingPercentRate + numWitholdingRate;
         }
         //get net pay
-        numNetPay.toFixed(2) = numGrossSalary - numTotalTaxDeduct;
+        numNetPay = numGrossSalary - numTotalTaxDeduct;
         //Print to label
-        $('#ans_net').text(numNetPay);
+        $('#ans_net').text(numNetPay.toFixed(2));
     }
-
-    $("#btn_submit").on('click', function() {
-        //getting values from input
-        numOTtype = $("#OT_type").val();
-        numDailyrate = $("#dailyrate").val();
-        numTimeInHrs = $("#start_time").val();
-        numTimeOutHrs = $("#end_time").val();
-
-        //Dividing the daily numWitholdingPercentRate by 8 hours
-        numHourlyrate = numDailyrate / 8;
-        //Getting absolute total work hours
-        numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
-
-        //Check the total hours if there's an OT
-        if (numTotalTime > 8) {
-            //Overtime is ON
-            intOTFlag = 1;
-            //getting person hours (8)
-            numRegHours = 8;
-            //Retrieving total Overtime
-            numTotalOThrs = Math.abs(numTotalTime - 8);
-            getNightDiff();
-        } else
-
-        //selecting calculation based from Overtime type
-            switch (numOTtype) {
-            case 0:
-                alert('Select Overtime Type');
-                break;
-            case 1:
-                calcRegularOT();
-                break;
-            case 2:
-                calcRestOT();
-                break;
-            case 3:
-                calcLegalHolOT();
-                break;
-            default:
-                alert('Select Overtime Type');
-                break;
-        }
-
-    });
 
 })
