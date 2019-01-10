@@ -1,8 +1,8 @@
 $(document).ready(function() {
     //Options
-    let numOTtype = 0;
+    var numOTtype = 0;
     //Rates
-    let numDailyrate = 0,
+    var numDailyrate = 0,
         numHourlyrate = 0,
         numRegHourRate = 0,
         numOvertimeRate = 0,
@@ -16,14 +16,14 @@ $(document).ready(function() {
     numSSSAmt = 0,
         numPagibigAmt = 100, numTotalTaxRate = 0, numTotalTaxDeduct = 0, numNetPay = 0;
     //Hours
-    let numTimeInHrs = 0,
+    var numTimeInHrs = 0,
         numTimeOutHrs = 0,
         numTotalTime = 0;
-    let numRegHours = 0;
-    let numTotalOThrs = 0;
-    let numRegOThrs = 0;
-    let numOTNDhrs = 0;
-    let numNightDiffHrsSet = [23, 24, 1, 2, 3, 4, 5];
+    var numRegHours = 0;
+    var numTotalOThrs = 0;
+    var numRegOThrs = 0;
+    var numOTNDhrs = 0;
+    var numNightDiffHrsSet = [23, 24, 1, 2, 3, 4, 5];
     //Flags
     var intIfNDFlag = 0,
         intOTFlag = 0;
@@ -46,43 +46,43 @@ $(document).ready(function() {
     // Regular overtime
     function calcRegularOT() {
         //get regular numWitholdingPercentRate
-        numRegHourRate.toFixed(2) = numRegHours * numHourlyrate;
+        numRegHourRate = numRegHours * numHourlyrate;
         //Print the amount selected
-        $('#ans_regtime').text(numRegHourRate);
+        $('#ans_regtime').text(numRegHourRate.toFixed(2));
+        console.log(numRegHourRate.toFixed(2));
         //if there's an Overtime
         if (intOTFlag == 1) {
             //Overtime numWitholdingPercentRate
-            numOvertimeRate.toFixed(2) = numTotalOThrs * 1.25 * numHourlyrate;
+            numOvertimeRate = numTotalOThrs * 1.25 * numHourlyrate;
             //Print the amount selected
-            $('#ans_overtime').text(numOvertimeRate);
+            $('#ans_overtime').text(numOvertimeRate.toFixed(2));
+            console.log(numOvertimeRate.toFixed(2));
             //if there's an night diff
             if (intIfNDFlag == 1) {
                 //night diff numWitholdingPercentRate
-                numOTNDrate.toFixed(2) = numOTNDhrs * 0.1 * numHourlyrate * 1.25;
+                numOTNDrate = numOTNDhrs * 0.1 * numHourlyrate * 1.25;
                 //Print the amount selected
-                $('#ans_otND').text(numOTNDrate);
+                $('#ans_otND').text(numOTNDrate.toFixed(2));
+                console.log(numOTNDrate.toFixed(2));
             }
             //if there's no Night Diff
             else {
-                numOTNDrate.toFixed(2) = 0.00;
+                numOTNDrate = 0.00;
             }
             //get total Overtime numWitholdingPercentRate
-            numTotalOTRate.toFixed(2) = numOTNDrate + numOvertimeRate;
+            numTotalOTRate = numOTNDrate + numOvertimeRate;
             //Print the amount selected
-            $('#ans_totalOT').text(numTotalOTRate);
+            $('#ans_totalOT').text(numTotalOTRate.toFixed(2));
         }
         //if there's no overtime
         else {
             //get total Overtime numWitholdingPercentRate
-            numTotalOTRate.toFixed(2) = 0.00;
+            numTotalOTRate = 0.00;
         }
         //gross salary
-        numGrossSalary.toFixed(2) = numRegHourRate + numTotalOTRate;
+        numGrossSalary = numRegHourRate + numTotalOTRate;
         //Print the amount selected
-        $('#ans_gross').text(numGrossSalary);
-        fnPagibig();
-        fnPhilHealth();
-        fnSSS();
+        $('#ans_gross').text(numGrossSalary.toFixed(2));
         calcTax();
     }
 
@@ -124,9 +124,6 @@ $(document).ready(function() {
         numGrossSalary.toFixed(2) = numRegHourRate + numTotalOTRate;
         //Print the amount selected
         $('#ans_gross').text(numGrossSalary.toFixed(2));
-        fnPagibig();
-        fnPhilHealth();
-        fnSSS();
         calcTax();
     }
 
@@ -169,9 +166,6 @@ $(document).ready(function() {
         numGrossSalary.toFixed(2) = numRegHourRate + numTotalOTRate;
         //Print the amount selected
         $('#ans_gross').text(numGrossSalary.toFixed(2));
-        fnPagibig();
-        fnPhilHealth();
-        fnSSS();
         calcTax();
     }
 
@@ -237,6 +231,10 @@ $(document).ready(function() {
     }
 
     function calcTax() {
+        //Compute essentials
+        fnPagibig();
+        fnPhilHealth();
+        fnSSS();
         //value matching
         if (numGrossSalary > 685 && numGrossSalary < 1097) {
             numCompensationLevel = 685;
@@ -274,13 +272,13 @@ $(document).ready(function() {
 
     $("#btn_submit").on('click', function() {
         //getting values from input
-        numOTtype = $('#OT_type').val();
-        numDailyrate.toFixed(2) = $('#dailyrate').val();
-        numTimeInHrs = $('#start_time').val();
-        numTimeOutHrs = $('#end_time').val();
+        numOTtype = $("#OT_type").val();
+        numDailyrate = $("#dailyrate").val();
+        numTimeInHrs = $("#start_time").val();
+        numTimeOutHrs = $("#end_time").val();
 
         //Dividing the daily numWitholdingPercentRate by 8 hours
-        numHourlyrate.toFixed(2) = numDailyrate / 8;
+        numHourlyrate = numDailyrate / 8;
         //Getting absolute total work hours
         numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
 
