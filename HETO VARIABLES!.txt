@@ -19,3 +19,4 @@ ans_sss
 ans_philhealth
 ans_pagibig
 ans_totalded
+ans_nightDiff
