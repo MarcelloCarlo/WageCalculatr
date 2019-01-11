@@ -27,6 +27,8 @@ $(document).ready(function() {
     //Flags
     var intIfNDFlag = 0,
         intOTFlag = 0;
+    //Extra Variables
+    newNumTotalTime = 0;
 
     $("#btn_submit").on('click', function() {
         //getting values from input
@@ -41,6 +43,7 @@ $(document).ready(function() {
         //Getting absolute total work hours
         numTotalTime = Math.abs(numTimeInHrs - numTimeOutHrs);
         console.log("numTotalTime " + numTotalTime);
+
         //Check the total hours if there's an OT
         if (numTotalTime >= 8) {
 
